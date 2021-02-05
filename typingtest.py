@@ -1,17 +1,21 @@
 from tkinter import *
+from tkinter import messagebox
 import threading
 import time
 
 
+# Main class for tkinter window
 class Window(Frame):
 
     # Contains member variables
     def __init__(self, master):
         self.master = master
-        self.counter = 0 # counts how many letters the user types, back space will decrement counter
-        self.mistakes = 0 # counts mistakes
-        self.key = '' # key user pressed
-        self.line = "" # line being read from file to be displayed
+        self.total_counter = 0 # counts how many letters the user types, back space will decrement counter
+        self.counter = 0 # Specific counter to key_pressed() for tracking correct/incorrect words
+        self.space_counter = 0 # Counts spaces ("words")
+        self.mistakes = 0 # Counts mistakes
+        self.key = '' # Key user pressed
+        self.line = "" # Line being read from file to be displayed
         self.text_display = Text()
         self.text_input = Text()
         self.time_label = Label(text="0")
@@ -29,27 +33,23 @@ class Window(Frame):
         valid_words = ["equal", "space", "braceright", "braceleft", "parenright", "parenleft", "asterisk", "colon", "underscore", "semicolon", "numbersign", "comma", "period", "exclam", "quoteright", "quotedbl"]
         valid_words_signs = ["=", " ", "}", "{", ")", "(", "*", ":", "_", ";", "#", ",", ".", "!", '"', "'"]
 
-        if self.key == "BackSpace" and self.counter > 0: # Handles the removal of characters
-            txt = self.text_input.get("1.0", END)
-            txt = txt[:len(txt)-2]
-
-            self.text_input.configure(state="normal")
-            self.text_input.delete("1.0", END)
-            self.text_input.insert("1.0", txt)
-            self.text_input.configure(state="disabled")
-            self.counter -= 1
-
-        elif self.key in valid_words: # Handles special cases (valid_words) because tkinter uses strings instead of the actual char
+        # Handles special cases (valid_words) because tkinter uses strings instead of the actual char
+        if self.key in valid_words: 
             index = valid_words.index(self.key)
             if valid_words_signs[index] == self.line[self.counter]:
                 self.text_input.configure(state="normal")
                 self.text_input.insert("end", valid_words_signs[index])
                 self.text_input.configure(state="disabled")
                 self.counter += 1
+                print("called", self.key)
+                # Increments space counter to indicate new word
+                if self.key == "space":
+                    self.space_counter += 1
             else:
                 self.mistakes += 1
 
-        elif len(self.key) == 1: # Handles normal numbers/letters
+        # Handles normal numbers/letters
+        elif len(self.key) == 1: 
             if (self.line[self.counter] == self.key):
                 self.text_input.configure(state='normal')
                 self.text_input.insert("end", self.key)
@@ -57,6 +57,8 @@ class Window(Frame):
                 self.counter += 1
             else:
                 self.mistakes += 1     
+
+        self.total_counter += 1
     
     # Creates two text boxes
     def text_box(self):
@@ -66,6 +68,7 @@ class Window(Frame):
         f.close()
         lineSize = len(self.line)
 
+        # Set fonts for both displays
         font1 = ("Verdana", 15)
         
         font2 = ("Verdana", 30)
@@ -97,17 +100,36 @@ class Window(Frame):
             time.sleep(1)
             self.time_label.config(text=str(i+1))
             self.time_label.pack()
-                
+        self.stats_message()
 
+    # Prints round's statistics
+    def stats_message(self):
+        accuracy = "Error"
+
+        if self.total_counter - self.mistakes < 0:
+            accuracy = "Your accuracy was 0%"
+        else:
+            accuracy = "Your accuracy was " + str(int(((self.total_counter - self.mistakes) / self.total_counter) * 100)) + "%"
+
+        wpm = "Your WPM was " + str(self.space_counter)
+
+        stats = wpm + "\n" + accuracy
+
+        messagebox.showinfo("", stats)
+
+
+# Tkinter settings
 root = Tk()
 
 root.title("Typing Test")
 root.geometry("1000x600")
 
+# Create class and call methods
 window = Window(root)
 
 window.text_box()
 window.input_listener()
 window.timer_display()
 
+# Start GUI
 root.mainloop()
