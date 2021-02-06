@@ -18,6 +18,7 @@ class Window(Frame):
         self.text_input = Text() # Text() for user input
         self.time_label = Label(text="0") # Label for timer
         self.total_time = 60 # Integer the timer counts up to 
+        self.start_timer = True
 
     # Creates key listener
     def input_listener(self):
@@ -34,6 +35,10 @@ class Window(Frame):
 
     # Function called every time key is pressed
     def key_pressed(self, e):
+        if self.start_timer:
+            window.timer_display()
+            self.start_timer = False
+
         self.text_input.see("end")
         self.text_display.see("1.0")
         self.key = e.keysym
@@ -127,7 +132,6 @@ window = Window()
 
 window.text_box()
 window.input_listener()
-window.timer_display()
 
 # Start GUI
 root.mainloop()
