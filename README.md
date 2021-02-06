@@ -1,7 +1,7 @@
 # <a name="title"></a> Speed Typing
 
 ### Introduction
-After reaching 130 WPM from constant speed typing training, I figured I would make my own speed typing program with custom input to maximize educational value.
+After reaching 130 WPM from constant speed typing training, I figured I would make my own speed typing program with custom input to maximize educational value. <br>
 
 
 ### Usage
@@ -12,7 +12,7 @@ After reaching 130 WPM from constant speed typing training, I figured I would ma
 2 - (Optional) Check if all [libraries](#Launch) are up to date with [pip](https://pip.pypa.io/en/stable/installing/) (```pip install [package_name] --upgrade```) <br>
 3 - (Optional) Set up a custom ```words.txt``` file using the ```script.py``` file, instructions below <br>
 
-Now, you are ready to begin improving your typing skills!
+Now, you are ready to begin improving your typing skills! <br><br>
 
 
 #### Customization (script.py)
@@ -24,7 +24,7 @@ Follow the given steps to create a custom data set to type to: <br>
 2 - On line 4 of `script.py`, set file_name equal to the text file (`file_name = [file.txt]`) <br>
 3 - Run script.py, which will parse the content to be readable by the main program <br> <br>
 
-The content will be written to words.txt, and will now be displayed when the program is run!
+The content will be written to words.txt, and will now be displayed when the program is run! <br><br>
 
 
 ### Previews
@@ -35,7 +35,7 @@ The content will be written to words.txt, and will now be displayed when the pro
 
 (2) A fun example of using the `script.py` file is on the program itself! Here is an example of what it looks like when loaded <br>
 
-<img width="1000" height="600" alt="portfolio_view" src="https://github.com/Sebastian-git/SpeedTyping/blob/master/imgs/Screenshot_1.png"> <br>
+<img width="1000" height="600" alt="portfolio_view" src="https://github.com/Sebastian-git/SpeedTyping/blob/master/imgs/Screenshot_1.png"> <br> <br>
 
 ### Technical Information 
 
@@ -84,7 +84,7 @@ def timer_threading(self):
         self.time_label.pack()
     self.stats_message() 
 ```
-
+<br><br>
 
 
 ### Launch
