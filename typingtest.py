@@ -18,11 +18,20 @@ class Window(Frame):
         self.text_display = Text() # Text() containing words to display to user
         self.text_input = Text() # Text() for user input
         self.time_label = Label(text="0") # Label for timer
-        self.total_time = 20 # Integer the timer counts up to 
+        self.total_time = 60 # Integer the timer counts up to 
 
     # Creates key listener
     def input_listener(self):
         root.bind("<Key>", self.key_pressed)
+
+    # Colors previous and current text
+    def text_colors(self, char):
+        self.text_input.configure(state="normal")
+        self.text_input.tag_add('previous_letters', 'end-1c linestart', 'end-1c')
+        self.text_input.tag_configure("previous_letters", foreground="#0a5d00")
+        self.text_input.insert("end", char)
+        self.text_input.configure(state="disabled")
+        self.counter += 1
 
     # Function called every time key is pressed
     def key_pressed(self, e):
@@ -30,19 +39,14 @@ class Window(Frame):
         self.text_display.see("1.0")
         self.key = e.keysym
 
-        valid_words = ["equal", "space", "braceright", "braceleft", "parenright", "parenleft", "asterisk", "colon", "underscore", "semicolon", "numbersign", "comma", "period", "exclam", "quoteright", "quotedbl", "slash", "backslash"]
-        valid_words_signs = ["=", " ", "}", "{", ")", "(", "*", ":", "_", ";", "#", ",", ".", "!", '"', "'", "/", "\\"]
+        valid_words = ["equal", "space", "braceright", "braceleft", "parenright", "parenleft", "asterisk", "colon", "underscore", "semicolon", "numbersign", "comma", "period", "exclam", "quoteright", "quotedbl", "slash", "backslash", "less", "greater", "question", "quoteleft", "asciitilde", "bracketleft", "brackerright", "bar", "plus", "minus"]
+        valid_words_signs = ["=", " ", "}", "{", ")", "(", "*", ":", "_", ";", "#", ",", ".", "!", "'", '"', "/", "\\", "<", ">", "?", "`", "~", "[", "]", "|", "+", "-"]
 
         # Handles special cases (valid_words) because tkinter uses strings instead of the actual char
         if self.key in valid_words: 
             index = valid_words.index(self.key)
             if valid_words_signs[index] == self.line[self.counter]:
-                self.text_input.configure(state="normal")
-                self.text_input.tag_add('previous_letters', 'end-1c linestart', 'end-1c')
-                self.text_input.tag_configure("previous_letters", foreground="#0a5d00")
-                self.text_input.insert("end", valid_words_signs[index])
-                self.text_input.configure(state="disabled")
-                self.counter += 1
+                self.text_colors(valid_words_signs[index])
                 # Increments space counter to indicate new word
                 if self.key == "space":
                     self.space_counter += 1
@@ -52,12 +56,7 @@ class Window(Frame):
         # Handles normal numbers/letters
         elif len(self.key) == 1: 
             if (self.line[self.counter] == self.key):
-                self.text_input.configure(state='normal')
-                self.text_input.tag_add('previous_letters', 'end-1c linestart', 'end-1c')
-                self.text_input.tag_configure("previous_letters", foreground="#0a5d00")
-                self.text_input.insert("end", self.key)
-                self.text_input.configure(state='disabled')
-                self.counter += 1
+                self.text_colors(self.key)
             else:
                 self.mistakes += 1     
 
