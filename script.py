@@ -1,15 +1,16 @@
 # Takes file and removes all new lines, quotes and apostrophes
 
-data = open("typingtest.py", "r").read().replace("\n", "").replace("'", "").replace('"', "") # Removes new lines
+# Specify which file to use for words.txt
+file_name = "typingtest.py"
+data = open(file_name, "r").read().replace("'", "").replace('"', "") # Removes new lines
 
 newData = ""
 prev = ""
 for char in data:
-    else:
-        if char == " " and prev != " ": # Only allows one space at a time
-            newData += char
-        elif char != " ":
-            newData += char
+    if char.isspace() and not (prev.isspace()): # Only allows one space at a time
+        newData += " "
+    elif not (char.isspace()):
+        newData += char
 
     prev = char
 

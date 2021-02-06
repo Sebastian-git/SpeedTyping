@@ -16,9 +16,10 @@ class Window(Frame):
         self.mistakes = 0 # Counts mistakes
         self.key = '' # Key user pressed
         self.line = "" # Line being read from file to be displayed
-        self.text_display = Text()
-        self.text_input = Text()
-        self.time_label = Label(text="0")
+        self.text_display = Text() # Text() containing words to display to user
+        self.text_input = Text() # Text() for user input
+        self.time_label = Label(text="0") # Label for timer
+        self.total_time = 60 # Integer the timer counts up to 
 
     # Creates key listener
     def input_listener(self):
@@ -30,14 +31,16 @@ class Window(Frame):
         self.text_display.see("1.0")
         self.key = e.keysym
 
-        valid_words = ["equal", "space", "braceright", "braceleft", "parenright", "parenleft", "asterisk", "colon", "underscore", "semicolon", "numbersign", "comma", "period", "exclam", "quoteright", "quotedbl"]
-        valid_words_signs = ["=", " ", "}", "{", ")", "(", "*", ":", "_", ";", "#", ",", ".", "!", '"', "'"]
+        valid_words = ["equal", "space", "braceright", "braceleft", "parenright", "parenleft", "asterisk", "colon", "underscore", "semicolon", "numbersign", "comma", "period", "exclam", "quoteright", "quotedbl", "slash", "backslash"]
+        valid_words_signs = ["=", " ", "}", "{", ")", "(", "*", ":", "_", ";", "#", ",", ".", "!", '"', "'", "/", "\\"]
 
         # Handles special cases (valid_words) because tkinter uses strings instead of the actual char
         if self.key in valid_words: 
             index = valid_words.index(self.key)
             if valid_words_signs[index] == self.line[self.counter]:
                 self.text_input.configure(state="normal")
+                self.text_input.tag_add('previous_letters', 'end-1c linestart', 'end-1c')
+                self.text_input.tag_configure("previous_letters", foreground="#0a5d00")
                 self.text_input.insert("end", valid_words_signs[index])
                 self.text_input.configure(state="disabled")
                 self.counter += 1
@@ -52,6 +55,8 @@ class Window(Frame):
         elif len(self.key) == 1: 
             if (self.line[self.counter] == self.key):
                 self.text_input.configure(state='normal')
+                self.text_input.tag_add('previous_letters', 'end-1c linestart', 'end-1c')
+                self.text_input.tag_configure("previous_letters", foreground="#0a5d00")
                 self.text_input.insert("end", self.key)
                 self.text_input.configure(state='disabled')
                 self.counter += 1
@@ -69,16 +74,15 @@ class Window(Frame):
         lineSize = len(self.line)
 
         # Set fonts for both displays
-        font1 = ("Verdana", 15)
-        
-        font2 = ("Verdana", 30)
+        font1 = ("Consolas", 15)
+        font2 = ("Consolas", 30)
 
         # Text (Display information)
         self.text_display = Text(bg="#bebebe", fg="black", font=font1, height="6", width="30", borderwidth=2, relief="solid", yscrollcommand="true", wrap="word")
         self.text_display.pack(pady=50, padx=50)
         self.text_display.insert(1.0, self.line)
         self.text_display.focus()
-        self.text_display.config(state="disabled")
+        self.text_display.config(bg="#2a2a2a", state="disabled", fg="#0eff00")
         self.text_display.mark_set("insert", "%d.%d" % (1, 0))
         self.text_display.pack(fill=BOTH, expand=1)
 
@@ -86,7 +90,10 @@ class Window(Frame):
         self.text_input = Text(bg="#bebebe", fg="black", font=font2, height="2", width="30", borderwidth=2, relief="solid", yscrollcommand="true", wrap="word")
         self.text_input.pack(pady=50)
         self.text_input.focus()
-        self.text_input.config(state="disabled")
+        self.text_input.config(state="disabled", bg="#2a2a2a", fg="#0eff00")
+
+        # Label background
+        self.time_label.config(bg="#161616", fg="#0eff00", font=font1)
 
     # Creates new thread and calls function
     def timer_display(self):
@@ -96,7 +103,7 @@ class Window(Frame):
 
     # New thread updates time label every second until one minute
     def timer_thread(self):
-        for i in range(60):
+        for i in range(self.total_time):
             time.sleep(1)
             self.time_label.config(text=str(i+1))
             self.time_label.pack()
@@ -104,15 +111,12 @@ class Window(Frame):
 
     # Prints round's statistics
     def stats_message(self):
-        accuracy = "Error"
-
         if self.total_counter - self.mistakes < 0:
             accuracy = "Your accuracy was 0%"
         else:
             accuracy = "Your accuracy was " + str(int(((self.total_counter - self.mistakes) / self.total_counter) * 100)) + "%"
 
         wpm = "Your WPM was " + str(self.space_counter)
-
         stats = wpm + "\n" + accuracy
 
         messagebox.showinfo("", stats)
@@ -123,6 +127,7 @@ root = Tk()
 
 root.title("Typing Test")
 root.geometry("1000x600")
+root.configure(bg="#161616")
 
 # Create class and call methods
 window = Window(root)
