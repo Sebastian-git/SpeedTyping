@@ -11,7 +11,6 @@ class Window(Frame):
     def __init__(self):
         self.total_counter = 0 # counts how many letters the user types, back space will decrement counter
         self.counter = 0 # Specific counter to key_pressed() for tracking correct/incorrect words
-        self.space_counter = 0 # Counts spaces ("words")
         self.mistakes = 0 # Counts mistakes
         self.key = '' # Key user pressed
         self.line = "" # Line being read from file to be displayed
@@ -47,9 +46,6 @@ class Window(Frame):
             index = valid_words.index(self.key)
             if valid_words_signs[index] == self.line[self.counter]:
                 self.text_colors(valid_words_signs[index])
-                # Increments space counter to indicate new word
-                if self.key == "space":
-                    self.space_counter += 1
             else:
                 self.mistakes += 1
 
@@ -94,12 +90,12 @@ class Window(Frame):
 
     # Creates new thread and calls function
     def timer_display(self):
-        x = threading.Thread(target=self.timer_thread)
-        x.daemon = True
-        x.start()
+        timer_thread = threading.Thread(target=self.timer_threading)
+        timer_thread.daemon = True
+        timer_thread.start()
 
     # New thread updates time label every second until one minute
-    def timer_thread(self):
+    def timer_threading(self):
         for i in range(self.total_time):
             time.sleep(1)
             self.time_label.config(text=str(i+1))
@@ -113,7 +109,7 @@ class Window(Frame):
         else:
             accuracy = "Your accuracy was " + str(int(((self.total_counter - self.mistakes) / self.total_counter) * 100)) + "%"
 
-        wpm = "Your WPM was " + str(self.space_counter)
+        wpm = "Your WPM was " + str(int(self.total_counter/5))
         stats = wpm + "\n" + accuracy
 
         messagebox.showinfo("", stats)
