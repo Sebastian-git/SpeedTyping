@@ -8,8 +8,7 @@ import time
 class Window(Frame):
 
     # Contains member variables
-    def __init__(self, master):
-        self.master = master
+    def __init__(self):
         self.total_counter = 0 # counts how many letters the user types, back space will decrement counter
         self.counter = 0 # Specific counter to key_pressed() for tracking correct/incorrect words
         self.space_counter = 0 # Counts spaces ("words")
@@ -19,7 +18,7 @@ class Window(Frame):
         self.text_display = Text() # Text() containing words to display to user
         self.text_input = Text() # Text() for user input
         self.time_label = Label(text="0") # Label for timer
-        self.total_time = 60 # Integer the timer counts up to 
+        self.total_time = 20 # Integer the timer counts up to 
 
     # Creates key listener
     def input_listener(self):
@@ -44,7 +43,6 @@ class Window(Frame):
                 self.text_input.insert("end", valid_words_signs[index])
                 self.text_input.configure(state="disabled")
                 self.counter += 1
-                print("called", self.key)
                 # Increments space counter to indicate new word
                 if self.key == "space":
                     self.space_counter += 1
@@ -109,7 +107,7 @@ class Window(Frame):
             self.time_label.pack()
         self.stats_message()
 
-    # Prints round's statistics
+    # Displays round's statistics
     def stats_message(self):
         if self.total_counter - self.mistakes < 0:
             accuracy = "Your accuracy was 0%"
@@ -130,7 +128,7 @@ root.geometry("1000x600")
 root.configure(bg="#161616")
 
 # Create class and call methods
-window = Window(root)
+window = Window()
 
 window.text_box()
 window.input_listener()
