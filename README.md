@@ -27,7 +27,7 @@ Follow the given steps to create a custom data set to type to: <br>
 The content will be written to words.txt, and will now be displayed when the program is run!
 
 
-##### Previews
+### Previews
 
 (1) The program will display the words to type at the top, color the last word typed in light green, and shows the timer at the bottom <br>
 
@@ -37,7 +37,7 @@ The content will be written to words.txt, and will now be displayed when the pro
 
 <img width="1000" height="600" alt="portfolio_view" src="https://github.com/Sebastian-git/SpeedTyping/blob/master/imgs/Screenshot_1.png"> <br>
 
-##### Technical Information 
+### Technical Information 
 
 (1)
 The most important piece of code in `script.py` is the for loop which removes double spaces and all white space characters (`\t`, `\n`). Starting on line 10: <br>
@@ -59,7 +59,7 @@ If this condition is met, only one space is appended to the new string. <br>
 
 Otherwise, if the current character isn't a white space (a normal letter/number), then append the character. <br>
 
-Finally, set the previous character equal to the current for the next iteration. <br>
+Finally, set the previous character equal to the current for the next iteration. <br> <br>
 
 
 (2)
@@ -89,8 +89,8 @@ def timer_threading(self):
 
 ### Launch
 Python 3.9.0 <br>
-TKinter, Threading, Time <br>
-VS Code 1.48, <br>
+Libraries: TKinter, Threading, Time <br>
+VS Code 1.48 <br>
 
 ### Status: 
 
