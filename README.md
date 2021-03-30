@@ -1,7 +1,7 @@
 # <a name="title"></a> Speed Typing
 
 ### Introduction
-After reaching 130 WPM from constant speed typing training, I figured I would make my own speed typing program with custom input to maximize educational value. <br>
+After reaching 130 WPM from constant speed typing training, I figured I would make my own speed typing program with custom input to maximize educational value. The program tracks your WPM by tracking how many characters you type per minute and divide them by 5, which is what many online speed typing websites do instead of tracking actual WPM to still give credit for longer words. <br>
 
 
 ### Usage
